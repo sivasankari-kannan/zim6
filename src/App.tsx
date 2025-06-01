@@ -52,7 +52,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       return <Navigate to="/admin" replace />;
     }
     if (user?.role === 'customer' && !window.location.pathname.startsWith('/customer')) {
-      return <Navigate to="/customer" replace />;
+      return <Navigate to="/customer\" replace />;
     }
     if (user?.role === 'client' && window.location.pathname.startsWith('/customer')) {
       return <Navigate to="/dashboard" replace />;
@@ -181,7 +181,7 @@ function App() {
             />
 
             {/* Fallback route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to="/\" replace />} />
           </Routes>
         </BrowserRouter>
 
