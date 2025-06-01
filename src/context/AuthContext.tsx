@@ -28,7 +28,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for saved user in localStorage
     const savedUser = localStorage.getItem('zim-user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -36,52 +35,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, []);
 
-  // const login = async (email: string, password: string) => {
-  //   // In a real app, this would call an API
-  //   // For demo purposes, we'll just simulate a successful login
-    
-  //   // Simulate API delay
-  //   setIsLoading(true);
-  //   await new Promise(resolve => setTimeout(resolve, 1000));
-    
-  //   const mockUser: User = {
-  //     id: '1',
-  //     name: 'John Doe',
-  //     email,
-  //     role: 'admin',
-  //     avatar: `https://ui-avatars.com/api/?name=John+Doe&background=0EA5E9&color=fff`,
-  //   };
-    
-  //   setUser(mockUser);
-  //   localStorage.setItem('zim-user', JSON.stringify(mockUser));
-  //   setIsLoading(false);
-  // };
   const login = async (email: string, password: string) => {
-  setIsLoading(true);
-  await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-  // Simple role detection based on email
-  const isAdmin = email === 'admin@example.com'; // ✅ Replace with your actual admin email check
+    let mockUser: User;
 
-  const mockUser: User = {
-    id: '1',
-    name: isAdmin ? 'Admin User' : 'Client User',
-    email,
-    role: isAdmin ? 'admin' : 'client',
-    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(isAdmin ? 'Admin User' : 'Client User')}&background=0EA5E9&color=fff`,
+    if (email === 'admin@example.com') {
+      mockUser = {
+        id: '1',
+        name: 'Admin User',
+        email,
+        role: 'admin',
+        avatar: `https://ui-avatars.com/api/?name=Admin+User&background=0EA5E9&color=fff`,
+      };
+    } else if (email === 'customer@example.com') {
+      mockUser = {
+        id: '2',
+        name: 'John Customer',
+        email,
+        role: 'customer',
+        avatar: `https://ui-avatars.com/api/?name=John+Customer&background=0EA5E9&color=fff`,
+      };
+    } else {
+      mockUser = {
+        id: '3',
+        name: 'Gym Owner',
+        email,
+        role: 'client',
+        avatar: `https://ui-avatars.com/api/?name=Gym+Owner&background=0EA5E9&color=fff`,
+      };
+    }
+
+    setUser(mockUser);
+    localStorage.setItem('zim-user', JSON.stringify(mockUser));
+    setIsLoading(false);
   };
 
-  setUser(mockUser);
-  localStorage.setItem('zim-user', JSON.stringify(mockUser));
-  setIsLoading(false);
-};
-
-
   const signup = async (name: string, email: string, password: string) => {
-    // In a real app, this would call an API
-    // For demo purposes, we'll just simulate a successful signup
-    
-    // Simulate API delay
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -89,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: '1',
       name,
       email,
-      role: 'admin',
+      role: 'client',
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0EA5E9&color=fff`,
     };
     

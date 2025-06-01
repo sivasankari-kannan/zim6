@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 // Layout Components
 import Sidebar from './components/layout/Sidebar';
 import AdminLayout from './pages/admin/AdminLayout';
+import CustomerLayout from './pages/customer/CustomerLayout';
 
 // Client Pages
 import LandingPage from './pages/LandingPage';
@@ -28,6 +29,11 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import GymOwnersPage from './pages/admin/GymOwnersPage';
 import AddGymOwnerPage from './pages/admin/AddGymOwnerPage';
 
+// Customer Pages
+import CustomerDashboardPage from './pages/customer/CustomerDashboardPage';
+import CustomerProfilePage from './pages/customer/CustomerProfilePage';
+import CustomerAttendancePage from './pages/customer/CustomerAttendancePage';
+
 // Protected Route Component for Gym Owners
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -40,9 +46,17 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // Admins are not allowed to access client pages
-  if (isAuthenticated && user?.role === 'admin') {
-    return <Navigate to="/admin" replace />;
+  // Redirect based on user role
+  if (isAuthenticated) {
+    if (user?.role === 'admin' && !window.location.pathname.startsWith('/admin')) {
+      return <Navigate to="/admin" replace />;
+    }
+    if (user?.role === 'customer' && !window.location.pathname.startsWith('/customer')) {
+      return <Navigate to="/customer" replace />;
+    }
+    if (user?.role === 'client' && window.location.pathname.startsWith('/customer')) {
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   return isAuthenticated ? (
@@ -75,6 +89,13 @@ function App() {
               <Route index element={<AdminDashboardPage />} />
               <Route path="gym-owners" element={<GymOwnersPage />} />
               <Route path="gym-owners/new" element={<AddGymOwnerPage />} />
+            </Route>
+
+            {/* Customer Routes */}
+            <Route path="/customer" element={<CustomerLayout />}>
+              <Route index element={<CustomerDashboardPage />} />
+              <Route path="profile" element={<CustomerProfilePage />} />
+              <Route path="attendance" element={<CustomerAttendancePage />} />
             </Route>
 
             {/* Gym Owner Protected Routes */}
