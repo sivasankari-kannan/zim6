@@ -47,7 +47,7 @@ const CustomerProfilePage: React.FC = () => {
                 className="h-20 w-20 rounded-full"
               />
               {isEditing && (
-                <Button variant="outline" className="ml-4">
+                <Button variant="outline\" className="ml-4">
                   Change Photo
                 </Button>
               )}
